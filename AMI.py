@@ -17,6 +17,20 @@ def ami_encoding(bits):
 
     return encoded_bits
 
+# AMI Decoding
+def ami_decoding(encoded_bits):
+    decoded_bits = []
+    previous_level = 0  # Start with no previous signal
+
+    for level in encoded_bits:
+        if level == 0:
+            decoded_bits.append('0')
+        else:
+            decoded_bits.append('1')
+        previous_level = level
+
+    return ''.join(decoded_bits)
+
 # Longest Palindrome Finder
 def longest_palindrome(s):
     longest_palindrome = ""
@@ -27,27 +41,42 @@ def longest_palindrome(s):
                 longest_palindrome = substring
     return longest_palindrome
 
-# Input and processing
-binary_data = input("Enter the data: ")
-ami_data = ami_encoding(binary_data)
-palindrome = longest_palindrome(binary_data)
-print("Binary Data:", list(binary_data))
-print("AMI Encoded Data:", ami_data)
-print("Longest palindrome in data stream: ", palindrome)
-
+# Plotting function
 # Plotting function
 def plot(ami_data):
-    # Extend the last value to make the last bit fully visible
+    # Extend the last value to make the last bit fully visible on the plot
     extended_data = ami_data + [ami_data[-1]]
     
     plt.step(range(len(extended_data)), extended_data, where='post', color='blue', linewidth=2)
     plt.title('AMI Encoded Data')
     plt.xlabel('Bit Index')
     plt.ylabel('Voltage Level')
-    plt.axhline(0, color='red')
+    plt.axhline(0, color='red', linestyle='-')
     plt.ylim(-1.5, 1.5)  # Set y-axis limits for better visualization
-    for i in range(0, len(ami_data)+1):
-        plt.axvline(i, color='grey', linestyle='--')
+    
+    # Add vertical grid lines for each bit
+    for i in range(len(ami_data)):
+        plt.axvline(i, color='grey', linestyle='--', linewidth=0.5)
+    
     plt.show()
 
+
+# Main Execution
+binary_data = input("Enter the data: ")
+ami_data = ami_encoding(binary_data)
+palindrome = longest_palindrome(binary_data)
+
+print("Binary Data:", list(binary_data))
+print("AMI Encoded Data:", ami_data)
+print("Longest palindrome in data stream: ", palindrome)
+
+# Plotting the AMI encoded data
 plot(ami_data)
+
+# Ask the user if they want to decode the signal
+decode_choice = input("Do you want to decode the signal? (yes/no): ").strip().lower()
+if decode_choice == 'yes':
+    decoded_data = ami_decoding(ami_data)
+    print("Decoded Binary Data:", decoded_data)
+else:
+    print("Decoding skipped.")

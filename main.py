@@ -11,7 +11,7 @@ def choose_modulation():
     if int(modulation_choice) == 1:
         os.system("python pcm.py")
     else:
-        os.system("python dm.py")
+        os.system("python delta_modulation.py")
 
 def choose_line_encoding():
     print("\nYou have chosen Digital Signal\n")
@@ -19,7 +19,7 @@ def choose_line_encoding():
         "Enter the encoding technique you want to implement:\n"
         "1. NRZ-L\n"
         "2. NRZ-I\n"
-        "3. Manchester\n"
+        "3. manchester\n"
         "4. Differential Manchester\n"
         "5. AMI\n"
     ))
