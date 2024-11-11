@@ -14,7 +14,7 @@ def b8zs_encoding(bitstream):
         elif bit == '0':
             zero_count += 1
             if zero_count == 8:
-                # B8ZS substitution: 000VB0VB
+                #  substitute: 000VB0VB
                 for _ in range(7):
                     encoded_signal.pop()
                 encoded_signal.extend([0, 0, 0, -current_polarity, current_polarity, 0, current_polarity, -current_polarity])
@@ -22,25 +22,9 @@ def b8zs_encoding(bitstream):
             else:
                 encoded_signal.append(0)
     
-    encoded_signal.append(encoded_signal[-1])  # To complete the last step for plotting
+    encoded_signal.append(encoded_signal[-1])  # To complete the last step for plotting on graph
     return encoded_signal
 
-# B8ZS Decoding Function
-def b8zs_decoding(encoded_signal):
-    decoded_bits = []
-    i = 0
-    while i < len(encoded_signal) - 1:
-        # Detect B8ZS pattern 000VB0VB
-        if (i + 7 < len(encoded_signal) and 
-            encoded_signal[i:i+8] == [0, 0, 0, -encoded_signal[i+3], encoded_signal[i+3], 0, encoded_signal[i+3], -encoded_signal[i+3]]):
-            decoded_bits.extend(['0'] * 8)
-            i += 8
-        else:
-            # Decode a '1' if it's not zero, and a '0' if it's zero level
-            decoded_bits.append('1' if encoded_signal[i] != 0 else '0')
-            i += 1
-
-    return ''.join(decoded_bits)
 
 # Longest Palindrome Finder
 def longest_palindrome(data_stream):
@@ -59,7 +43,7 @@ def plot_b8zs(encoded_data):
     plt.xlabel('Bit Index')
     plt.ylabel('Voltage Level')
     plt.axhline(0, color='red')
-    plt.ylim(-1.5, 1.5)  # Set y-axis limits for better visualization
+    plt.ylim(-1.5, 1.5)  
     for i in range(len(encoded_data)):
         plt.axvline(i, color='grey', linestyle='--', linewidth=0.5)
     plt.show()
@@ -76,10 +60,3 @@ print("Longest palindrome in data stream:", longest_palindrome_in_stream)
 # Plotting the B8ZS encoded data
 plot_b8zs(b8zs_encoded_data)
 
-# Ask the user if they want to decode the signal
-decode_choice = input("Do you want to decode the signal? (yes/no): ").strip().lower()
-if decode_choice == 'yes':
-    decoded_data = b8zs_decoding(b8zs_encoded_data)
-    print("Decoded Binary Data:", decoded_data)
-else:
-    print("Decoding skipped.")
