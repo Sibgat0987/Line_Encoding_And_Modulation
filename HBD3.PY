@@ -57,30 +57,21 @@ def hdb3_decode(encoded_bits):
 
     return ''.join(decoded_bits)
 
-# Longest Palindromic Substring Finder
-def find_longest_palindrome(sequence):
-    longest_palindrome = ''
-    dp = [[False] * len(sequence) for _ in range(len(sequence))]
-
-    for i in range(len(sequence)):
-        dp[i][i] = True
-        longest_palindrome = sequence[i]
-
-    for start in range(len(sequence) - 1, -1, -1):
-        for end in range(start + 1, len(sequence)):
-            if sequence[start] == sequence[end]:
-                if end - start == 1 or dp[start + 1][end - 1]:
-                    dp[start][end] = True
-                    if len(longest_palindrome) < end - start + 1:
-                        longest_palindrome = sequence[start:end + 1]
-
+# Longest Palindrome Finder
+def longest_palindrome(s):
+    longest_palindrome = ""
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            substring = s[i:j + 1]
+            if substring == substring[::-1] and len(substring) > len(longest_palindrome):
+                longest_palindrome = substring
     return longest_palindrome
 
 # Main Execution
 binary_data = input("Enter the binary data stream: ")
 encoded_data = hdb3_encode(binary_data)
 decoded_data = hdb3_decode(encoded_data)
-longest_palindrome = find_longest_palindrome(binary_data)
+longest_palindrome = longest_palindrome(binary_data)
 
 print("Binary Data Stream:", list(binary_data))
 print("HDB3 Encoded Sequence:", encoded_data)
